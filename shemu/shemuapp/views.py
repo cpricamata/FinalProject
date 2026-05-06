@@ -60,8 +60,8 @@ def add_overtime(request, id_number):
         if hours < 0:
             all_employees = Employee.objects.all()
             return render(request, 'employees.html', {
-                'employees': all employees,
-                'error': 'Hours cannot be negative'
+                'employees': all_employees,
+                'error': 'Hours cannot be negative',
             })
 
         overtime_amount = (employee.rate /160) * 1.5 * hours
