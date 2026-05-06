@@ -3,6 +3,10 @@
 {% block content %}
 <h2>Employees</h2>
 
+{% if error %}
+<div class="alert alert-danger">{{ error }}</div>
+{% endif %}
+
 <a href="{% url 'create_employee' %}" class="btn btn-teal mb-3">New Employee</a>
 
 <table class="table table-striped">
