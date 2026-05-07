@@ -4,9 +4,9 @@ from django.db import models
 class Employee(models.Model):
     name = models.CharField(max_length=300)
     id_number = models.CharField(max_length=300)
-    rate = models.FloatField(max_digits=10, decimal_places=2)
-    overtime_pay = models.FloatField(max_digits=10, decimal_places=2, null=True, blank=True)
-    allowance = models.FloatField(max_digits=10, decimal_places=2, null=True, blank=True)
+    rate = models.DecimalField(max_digits=10, decimal_places=2)
+    overtime_pay = models.DecimalField(max_digits=10, decimal_places=2,null=True, blank=True)
+    allowance = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
     def getName(self):
         return self.name
