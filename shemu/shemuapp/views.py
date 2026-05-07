@@ -5,7 +5,7 @@ from .models import Employee, Payslip
 
 def employees(request):
     employees = Employee.objects.all()
-    return render(request, 'employees.html', {'employees': employees})
+    return render(request, 'shemuapp/employees.html', {'employees': employees})
 
 def create_employee(request):
     if request.method == 'POST':
