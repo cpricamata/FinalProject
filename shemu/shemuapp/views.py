@@ -23,27 +23,36 @@ def create_employee(request):
             allowance=float(allowance)
         )
         return redirect('employees')
-    return render(request, 'create_employee.html')
+    return render(request, 'shemuapp/create_employee.html')
 
-def update_employee(request, id_number):
+def update_employee(request, id_number=None):
+
+    if not id_number:
+        id_number = request.POST.get('id_number')
+
     if request.method == 'POST':
-        
-        #if only id number is submitted, it means the user clicked "Update" button
-        #show the update form w employee data
-        if 'id_number' in request.POST and 'name' not in request.POST:
-            id_number = request.POST.get('id_number')
+        if 'name' not in request.POST:
             employee = get_object_or_404(Employee, id_number=id_number)
-            return render(request, 'update_employee.html', {'employee': employee})
+            return render(request, 'shemuapp/update_employee.html', {'emp': employee})
         
-        #update the employee if all fields are submitted
-        Employee.objects.filter(if_number=id_number).update(
-            name=request.POST.get('name'),
-            id_number=request.POST.get('rate'),
-            rate=float(request.POST.get('rate')),
-            allowance=float(request.POST.get('allowance', 0) or 0)
-        )
-        return redirect ('employees')
+        try:
+            name = request.POST.get('name')
+            rate = request.POST.get('rate')
+            allowance = request.POST.get('allowance')
+
+            Employee.objects.filter(id_number=id_number).update(
+                name=name,
+                rate=float(rate) if rate and rate.strip() else 0.0,
+                allowance=float(allowance) if allowance and allowance.strip() else 0.0
+            )
+            return redirect('employees')
+        
+        except (ValueError, TypeError):
+            return redirect('employees')
+
     return redirect('employees')
+        
+    
 
 def delete_employee(request, id_number):
     if request.method == 'POST':
