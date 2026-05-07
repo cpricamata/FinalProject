@@ -13,59 +13,53 @@
 
     <div style="
         width:600px;
+        height:190px;
         margin:auto;
         padding:12px;
         background-color:#f4f6fb;
         border:1px solid #d0d7e2;
-        border-radius:10px;
         box-shadow:0 2px 6px rgba(0,0,0,0.1);
     ">
 
         <form method="POST">
             {% csrf_token %}
 
-            <div style="
-                text-align:left;
-                margin-bottom:20px;
-            ">
+            <div style=" text-align:center; margin-bottom:15px;">
 
                 <label>
                     <strong>Payroll For:</strong>
                 </label>
 
-                <br><br>
-
                 <select name="payroll_for" style="
-                    width:100%;
-                    padding:8px;
-                ">
+                    width:300px; padding:6px;
+                    margin-left:10px;">
+
                     <option value="all">All Employees</option>
 
-                    {% for employee in employees %}
-                    <option value="{{ employee.id_number }}">
-                        {{ employee.id_number }}
-                    </option>
-                    {% endfor %}
+                {% for employee in employees %}
+                <option value="{{ employee.id_number }}">
+                    {{ employee.id_number }}
+                </option>
+                {% endfor %}
+
                 </select>
 
             </div>
 
-            <hr style="margin:20px 0;">
+            <hr style="margin:15px 0;">
 
             <div style="
                 display:flex;
                 justify-content:space-between;
-                gap:15px;
-                margin-bottom:25px;
-            ">
+                gap:10px;
+                margin-bottom:15px;">
 
                 <div style="flex:1;">
 
                     <div style="
                         display:flex;
                         align-items:center;
-                        gap:10px;
-                    ">
+                        gap:10px;">
 
                         <label>
                             <strong>Month:</strong>
@@ -73,8 +67,7 @@
 
                         <select name="month" style="
                             flex:1;
-                            padding:8px;
-                        ">
+                            padding:8px;">
                             {% for month in months %}
                             <option value="{{ month }}">
                                 {{ month }}
@@ -91,8 +84,7 @@
                     <div style="
                         display:flex;
                         align-items:center;
-                        gap:10px;
-                    ">
+                        gap:10px;">
 
                         <label>
                             <strong>Year:</strong>
@@ -100,8 +92,7 @@
 
                         <input type="text" name="year" style="
                             flex:1;
-                            padding:8px;
-                        ">
+                            padding:8px;">
 
                     </div>
 
@@ -112,8 +103,7 @@
                     <div style="
                         display:flex;
                         align-items:center;
-                        gap:10px;
-                    ">
+                        gap:10px;">
 
                         <label>
                             <strong>Cycle:</strong>
@@ -121,8 +111,7 @@
 
                         <select name="cycle" style="
                             flex:1;
-                            padding:8px;
-                        ">
+                            padding:8px;">
                             <option value="1">1</option>
                             <option value="2">2</option>
                         </select>
@@ -138,11 +127,10 @@
                     background-color:#2c3e7b;
                     color:white;
                     border:none;
-                    padding:10px 25px;
+                    padding:6px 15px;
                     border-radius:5px;
                     font-weight:bold;
-                    cursor:pointer;
-                ">
+                    cursor:pointer;">
             </div>
 
         </form>
@@ -151,35 +139,28 @@
 
     <br><br>
 
-    <table cellpadding="10" style="
+    <table cellpadding="8" style="
         margin:auto;
         border-collapse:collapse;
         width:85%;
-        background-color:white;
-    ">
+        background-color:white;">
 
         <tr style="
             background-color:#2c3e7b;
-            color:white;
-        ">
+            color:white;">
             <th>ID</th>
-            <th>Employee ID</th>
             <th>Date</th>
             <th>Cycle</th>
             <th>Total Pay</th>
-            <th>Action</th>
+            <th>Option</th>
         </tr>
 
         {% for payslip in payslips %}
         <tr style="
             background-color:white;
-            border-bottom:1px solid #ddd;
-        ">
+            border-bottom:1px solid #ddd;">
 
             <td>{{ payslip.id }}</td>
-
-            <td>{{ payslip.id_number.id_number }}</td>
-
             <td>
                 {{ payslip.month }}
                 {{ payslip.date_range }},
@@ -191,9 +172,7 @@
             <td>{{ payslip.total_pay }}</td>
 
             <td>
-                <a href="{% url 'view_payslip' payslip.id %}">
-                    View
-                </a>
+                <a href="{% url 'view_payslip' payslip.id %}"> View </a>
             </td>
 
         </tr>
@@ -202,5 +181,6 @@
     </table>
 
 </div>
+
 
 {% endblock %}
