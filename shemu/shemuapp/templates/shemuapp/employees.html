@@ -44,7 +44,7 @@
                 <form method="post" action="{% url 'add_overtime' %}" style="display:inline;">
                     {% csrf_token %}
                     <input type="hidden" name="id_number" value="{{ employee.id_number }}">
-                    <input type="number" name="overtime_hours" step="0.01" placeholder="Hours" style="width:70px;" required>
+                    <input type="number" name="overtime_hours" step="0.01" placeholder="Hours" min="1" style="width:70px;" required>
                     <!-- PLACEHOLDER SOURCE: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/placeholder--> 
                     <button type="submit" class="btn btn-info btn-sm">Add OT</button>
                 </form>

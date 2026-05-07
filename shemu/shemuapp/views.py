@@ -54,10 +54,13 @@ def update_employee(request, id_number=None):
         
     
 
-def delete_employee(request, id_number):
+def delete_employee(request, id_number=None):
     if request.method == 'POST':
-        id_number = request.POST.get('id_number')
-        Employee.objects.filter(id_number=id_number).delete()
+        if not id_number:
+            id_number = request.POST.get('id_number')
+        employee = get_object_or_404(Employee, id_number=id_number)
+
+        employee.delete()
     return redirect('employees')
 
 def add_overtime(request, id_number):

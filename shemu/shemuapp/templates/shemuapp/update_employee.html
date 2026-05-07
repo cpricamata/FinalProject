@@ -32,15 +32,15 @@
 
                 <div class="mb-3">
                     <label class="text-dark fs-6 mb-1">Rate</label>
-                    <input type="number" name="rate" class="form-control" value="{{ emp.rate }}"" required>
+                    <input type="number" name="rate" class="form-control" min="1" value="{{ emp.rate }}" required>
                 </div>
 
                 <div class="mb-3">
                     <label class="text-dark fs-6 mb-1">Allowance (optional)</label>
-                    <input type="number" min="0" name="allowance" value="{{ emp.allowance }}"" class="form-control">
+                    <input type="number" min="0" name="allowance" value="{{ emp.allowance }}" class="form-control">
                 </div>
 
-                <input type="hidden" name="id_number" value="{{ employee.id_number }}">
+                <input type="hidden" name="id_number" value="{{ emp.id_number }}">
                 <button type="submit" class="btn btn-primary w-100 mb-2">
                     Update
                 </button>

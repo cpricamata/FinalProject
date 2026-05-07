@@ -18,7 +18,7 @@ class Employee(models.Model):
         return self.rate
     
     def getOvertime(self):
-        if self.overtime_pay is not None:
+        if not self.overtime_pay:
             message = "No overtime pay"
             return message
         else:
@@ -28,7 +28,7 @@ class Employee(models.Model):
         self.overtime_pay = 0
 
     def getAllowance(self):
-        if self.allowance is not None:
+        if not self.allowance:
             message = "No allowance"
             return message
         else:
