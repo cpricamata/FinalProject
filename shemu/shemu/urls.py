@@ -16,8 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from shemuapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('shemuapp.urls'))
+    path('', include('shemuapp.urls')),
+    path('', views.employees, name='employees'),
+    path('create-employee/', views.create_employee, name='create_employee'),
+    path('update-employee/', views.update_employee, name='update_employee'),
+    path('delete-employee/', views.delete_employee, name='delete_employee'),
+    path('add-overtime/', views.add_overtime, name='add_overtime'),
+    path('payslips/', views.payslips, name='payslips'),
+    path('view-payslip/<int:payslip_id>/', views.view_payslip, name='view_payslip'),
 ]
