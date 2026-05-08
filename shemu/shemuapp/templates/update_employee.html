@@ -1,4 +1,4 @@
-{% extends 'shemuapp/base.html' %}
+{% extends 'base.html' %}
 
 
 {% block content %}
@@ -16,32 +16,33 @@
     <div class="row justify-content-center">
         <div class="col-lg-8 col-md-10 border p-4 shadow-sm rounded">
 
-            <form method="POST">
+            <form method="POST" action="{% url 'update_employee' %}">
                 {% csrf_token %}
+
                 
                 <div class="mb-3">
                     <label class="text-dark fs-6 mb-1">Name</label>
-                    <input type="text" name="name" class="form-control" required>
+                    <input type="text" name="name" class="form-control" value="{{ emp.name }}"required>
                 </div>
 
                 <div class="mb-3">
                     <label class="text-dark fs-6 mb-1">ID Number:</label>
-                    <input type="text" min="1" name="id_number" class="form-control" required>
+                    <input type="text" min="1" name="id_number" class="form-control" value="{{ emp.id_number }}" required>
                 </div>
 
                 <div class="mb-3">
                     <label class="text-dark fs-6 mb-1">Rate</label>
-                    <input type="number" name="rate" min="1" class="form-control" required>
+                    <input type="number" name="rate" class="form-control" min="1" value="{{ emp.rate }}" required>
                 </div>
 
                 <div class="mb-3">
                     <label class="text-dark fs-6 mb-1">Allowance (optional)</label>
-                    <input type="number" min="0" name="allowance" class="form-control">
+                    <input type="number" min="0" name="allowance" value="{{ emp.allowance }}" class="form-control">
                 </div>
 
-
+                <input type="hidden" name="id_number" value="{{ emp.id_number }}">
                 <button type="submit" class="btn btn-primary w-100 mb-2">
-                    Submit
+                    Update
                 </button>
 
 
