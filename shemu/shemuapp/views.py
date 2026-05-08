@@ -291,3 +291,6 @@ def view_payslip(request, pk, payslip_id):
     
     payslip = get_object_or_404(Payslip, id=payslip_id)
     return render(request, 'view_payslip.html', {'payslip': payslip, 'pk': pk, 'current_user': account.getUsername()})
+
+def about_us(request):
+    return render(request, 'about_us.html')
