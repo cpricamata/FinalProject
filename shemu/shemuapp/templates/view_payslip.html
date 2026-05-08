@@ -6,7 +6,7 @@
     <table style="width: 80%; border-collapse: collapse; margin: auto;">
         <tr>
             <td style="text-align: left; padding: 8px;">
-                <strong>NAME:</strong> {{ payslip.name }}
+                <strong>NAME:</strong> {{ payslip.id_number.name }}
             </td>
 
             <td style="text-align: right; padding: 8px;">
@@ -16,7 +16,7 @@
 
         <tr>
             <td style="text-align: left; padding: 8px;">
-                <strong>ID NUMBER:</strong> {{ payslip.idnumber }}
+                <strong>ID NUMBER:</strong> {{ payslip.id_number.id_number }}
             </td>
 
             <td style="text-align: right; padding: 8px;">
@@ -35,7 +35,7 @@
 
         <tr>
             <td style="padding: 8px;">Base Pay</td>
-            <td style="padding: 8px;"> PHP {{ payslip.rate }} </td>
+            <td style="padding: 8px;"> PHP {{ payslip.getCycleRate }} </td>
             <td></td>
         </tr>
 
