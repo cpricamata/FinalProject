@@ -118,7 +118,7 @@ def create_employee(request, pk):
             allowance=float(allowance)
         )
         return redirect('employees', pk=pk)
-    return render(request, 'shemuapp/create_employee.html', {'pk': pk})
+    return render(request, 'shemuapp/create_employee.html', {'pk': pk, 'current_user': account.getUsername()})
 
 def update_employee(request, pk, id_number=None):
     account = get_object_or_404(Account, pk=pk)
@@ -129,7 +129,7 @@ def update_employee(request, pk, id_number=None):
     if request.method == 'POST':
         if 'name' not in request.POST:
             employee = get_object_or_404(Employee, id_number=id_number)
-            return render(request, 'shemuapp/update_employee.html', {'emp': employee, 'pk': pk})
+            return render(request, 'shemuapp/update_employee.html', {'emp': employee, 'pk': pk, 'current_user': account.getUsername()})
         
         try:
             name = request.POST.get('name')
@@ -144,7 +144,7 @@ def update_employee(request, pk, id_number=None):
             return redirect('employees', pk=pk)
         
         except (ValueError, TypeError):
-            return redirect('employees', pl=pk)
+            return redirect('employees', pk=pk)
 
     return redirect('employees')
 
@@ -159,7 +159,7 @@ def delete_employee(request, pk, id_number=None):
         employee.delete()
     return redirect('employees', pk=pk)
 
-def add_overtime(request, pk, id_number):
+def add_overtime(request, pk):
     account = get_object_or_404(Account, pk=pk)
     
     if request.method == 'POST':
@@ -172,15 +172,16 @@ def add_overtime(request, pk, id_number):
             return render(request, 'shemuapp/employees.html', {
                 'employees': all_employees,
                 'error': 'Hours cannot be negative',
-                'pk': pk
+                'pk': pk,
+                'current_user': account.getUsername()
             })
 
-        overtime_amount = (employee.rate /160) * 1.5 * hours
+        rate = float(employee.rate)
+        current_overtime = float(employee.overtime_pay) if employee.overtime_pay else 0.0
 
-        if employee.overtime_pay:
-            new_overtime = employee.overtime_pay + overtime_amount
-        else:
-            new_overtime = overtime_amount
+        overtime_amount = (rate /160) * 1.5 * hours
+
+        new_overtime = current_overtime + overtime_amount
 
         Employee.objects.filter(id_number=id_number).update(
             overtime_pay=new_overtime
@@ -282,10 +283,11 @@ def payslips(request, pk):
         'payslips': all_payslips,
         'months': months,
         'pk': pk,
+        'current_user': account.getUsername()
     })
 
 def view_payslip(request, pk, payslip_id):
     account = get_object_or_404(Account, pk=pk)
     
     payslip = get_object_or_404(Payslip, id=payslip_id)
-    return render(request, 'shemuapp/view_payslip.html', {'payslip': payslip, 'pk': pk})
+    return render(request, 'shemuapp/view_payslip.html', {'payslip': payslip, 'pk': pk, 'current_user': account.getUsername()})
