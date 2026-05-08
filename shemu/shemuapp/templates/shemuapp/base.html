@@ -80,16 +80,21 @@
 <body>
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'employees' %}">Shemu</a>
+            {% if current_user %}
+            <a class="navbar-brand" href="{% url 'employees' pk=pk %}">Shemu</a>
             <div class="navbar-nav">
-                <a class="nav-link" href="{% url 'employees' %}">Employees</a>
-                <a class="nav-link" href="{% url 'payslips' %}">Payslips</a>
+                <a class="nav-link" href="{% url 'employees' pk=pk %}">Employees</a>
+                <a class="nav-link" href="{% url 'payslips' pk=pk %}">Payslips</a>
 
                 {% if current_user %}
-                <a class="nav-link" href="{% url 'manage_account' %}">Manage Account</a>
+                <a class="nav-link" href="{% url 'manage_account' pk=pk %}">Manage Account</a>
                 <a class="nav-link" href="{% url 'logout' %}">Logout</a>
                 {% endif %}
             </div>
+            {% else %}
+            <a class="navbar-brand" href="{% url 'login' %}">Shemu</a>
+            <div class="navbar-nav"></div>
+            {% endif %}
         </div>
     </nav>
 
