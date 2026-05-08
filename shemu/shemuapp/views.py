@@ -38,9 +38,6 @@ def signup_view(request):
 def login_view(request):
     global current_user
     
-    if current_user is not None:
-        return redirect('employees')
-    
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
