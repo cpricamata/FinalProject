@@ -1,0 +1,32 @@
+{% extends 'shemuapp/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <div class="text-center mb-4">
+            <h2>Shemu</h2>
+            <p class="text-muted">Manage Account</p>
+        </div>    
+        <div class="card">
+            <div class="card-body p-4">
+                <h4 class="text-center mb-4">Account Details</h4>
+                
+                <div class="mb-4">
+                    <p><strong>Username:</strong> {{ current_user }}</p>
+                </div>
+                
+                <a href="{% url 'change_password' pk=pk %}" class="btn btn-teal w-100 mb-2">Change Password</a>
+                
+                <form method="post" action="{% url 'delete_account' pk=pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger w-100 mb-2" onclick="return confirm('Are you sure you want to delete your account? This cannot be undone!')">
+                    <!--ONCLICK SOURCE: https://hyperskill.org/university/frontend/html-onclick-->
+                        Delete Account
+                    </button>
+                </form>
+                <a href="{% url 'employees' %}" class="btn btn-secondary w-100">Back</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
