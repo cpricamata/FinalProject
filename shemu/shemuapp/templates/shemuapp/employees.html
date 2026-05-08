@@ -7,7 +7,7 @@
 <div class="alert alert-danger">{{ error }}</div>
 {% endif %}
 
-<a href="{% url 'create_employee' %}" class="btn btn-teal mb-3">New Employee</a>
+<a href="{% url 'create_employee' %}" class="btn btn-teal mb-3">+ New Employee</a>
 
 <table class="table table-striped">
     <thead>
@@ -28,7 +28,7 @@
             <td>{{ employee.rate }}</td>
             <td>{{ employee.getAllowance }}</td>
             <td>{{ employee.getOvertime }}</td>
-            <td>
+            <td style="white-space: nowrap;">
                 <form method="post" action="{% url 'update_employee' %}" style="display:inline;">
                     {% csrf_token %}
                     <input type="hidden" name="id_number" value="{{ employee.id_number }}">
@@ -44,7 +44,7 @@
                 <form method="post" action="{% url 'add_overtime' %}" style="display:inline;">
                     {% csrf_token %}
                     <input type="hidden" name="id_number" value="{{ employee.id_number }}">
-                    <input type="number" name="overtime_hours" step="0.01" placeholder="Hours" min="1" style="width:70px;" required>
+                    <input type="number" name="overtime_hours" step="0.01" placeholder="Hours" min="1" class="form-control form-control-sm" style="width:70px; display: inline-block; vertical-align: middle;" required>
                     <!-- PLACEHOLDER SOURCE: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/placeholder--> 
                     <button type="submit" class="btn btn-info btn-sm">Add OT</button>
                 </form>
