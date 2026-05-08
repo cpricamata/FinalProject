@@ -184,4 +184,4 @@ def payslips(request):
 
 def view_payslip(request, payslip_id):
     payslip = get_object_or_404(Payslip, id=payslip_id)
-    return render(request, 'view_payslip.html', {'payslip: payslip'})
+    return render(request, 'view_payslip.html', {'payslip': payslip})
