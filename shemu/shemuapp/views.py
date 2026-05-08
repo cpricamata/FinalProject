@@ -127,26 +127,30 @@ def update_employee(request, pk, id_number=None):
         id_number = request.POST.get('id_number')
 
     if request.method == 'POST':
-        if 'name' not in request.POST:
-            employee = get_object_or_404(Employee, id_number=id_number)
-            return render(request, 'update_employee.html', {'emp': employee, 'pk': pk, 'current_user': account.getUsername()})
-        
-        try:
-            name = request.POST.get('name')
-            rate = request.POST.get('rate')
-            allowance = request.POST.get('allowance')
+        name = request.POST.get('name')
+        rate = request.POST.get('rate')
+        allowance = request.POST.get('allowance')
 
-            Employee.objects.filter(id_number=id_number).update(
+        if name and rate:
+            original_id = request.POST.get('original_id_number', id_number)
+
+            Employee.objects.filter(id_number=original_id).update(
                 name=name,
+                id_number=request.POST.get('id_number'),
                 rate=float(rate) if rate and rate.strip() else 0.0,
                 allowance=float(allowance) if allowance and allowance.strip() else 0.0
             )
             return redirect('employees', pk=pk)
         
-        except (ValueError, TypeError):
-            return redirect('employees', pk=pk)
+        else:
+            employee = get_object_or_404(Employee, id_number=id_number)
+            return render(request, 'update_employee.html', {
+                'emp': employee,
+                'pk': pk,
+                'current_user': account.getUsername()
+            })
 
-    return redirect('employees')
+    return redirect('employees', pk=pk)
 
 def delete_employee(request, pk, id_number=None):
     account = get_object_or_404(Account, pk=pk)
@@ -238,9 +242,9 @@ def payslips(request, pk):
             })
         
         for emp in employees_to_process:
-            half_rate = emp.rate / 2
-            allowance = emp.getAllowance()
-            overtime = emp.getOvertime()
+            half_rate = float(emp.rate) / 2
+            allowance = float(emp.allowance) if emp.allowance else 0.0
+            overtime = float(emp.overtime_pay) if emp.overtime_pay else 0.0
 
             if cycle == 1: #cycle1: Pag-Ibig
                 pag_ibig = 100
@@ -252,8 +256,8 @@ def payslips(request, pk):
                 total_pay = tax_base - tax
             else: #cycle2: Philhealth and SSS
                 pag_ibig = 0
-                philhealth = emp.rate * 0.04
-                sss = emp.rate * 0.045
+                philhealth = float(emp.rate) * 0.04
+                sss = float(emp.rate) * 0.045
 
                 tax_base = half_rate + allowance + overtime - philhealth - sss
                 tax = tax_base * 0.2
@@ -291,9 +295,13 @@ def view_payslip(request, pk, payslip_id):
     payslip = get_object_or_404(Payslip, id=payslip_id)
 
     gross_pay = payslip.getCycleRate() + payslip.earnings_allowance + payslip.overtime
-    total_deductions = payslip.deductions_tax + payslip_pag_ibig + payslip.deductions_health + payslip.sss
+    total_deductions = payslip.deductions_tax + payslip.pag_ibig + payslip.deductions_health + payslip.sss
 
     return render(request, 'view_payslip.html', {'payslip': payslip, 'pk': pk, 'gross_pay': gross_pay, 'tota_deductions': total_deductions, 'current_user': account.getUsername()})
 
-def about_us(request):
-    return render(request, 'about_us.html')
+def about_us(request, pk):
+    account = get_object_or_404(Account, pk=pk)
+    return render(request, 'about_us.html', {
+        'pk': pk,
+        'current_user': account.getUsername()
+    })

@@ -16,5 +16,5 @@ urlpatterns = [
     path('add-overtime/<int:pk>/', views.add_overtime, name='add_overtime'),
     path('payslips/<int:pk>/', views.payslips, name='payslips'),
     path('view-payslip/<int:pk>/<int:payslip_id>/', views.view_payslip, name='view_payslip'),
-    path('about_us/', views.about_us, name='about_us'),
+    path('about_us/<int:pk>/', views.about_us, name='about_us'),
 ]

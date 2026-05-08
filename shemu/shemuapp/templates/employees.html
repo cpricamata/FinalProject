@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Employees</h2>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Employees</h2>
+    <a href="{% url 'create_employee' pk=pk %}" class="btn btn-teal mb-3">+ New Employee</a>
+</div>
 
 {% if error %}
 <div class="alert alert-danger">{{ error }}</div>
 {% endif %}
-
-<a href="{% url 'create_employee' pk=pk %}" class="btn btn-teal mb-3">+ New Employee</a>
 
 <table class="table table-striped">
     <thead>
