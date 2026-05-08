@@ -1,13 +1,108 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Employee, Payslip
+from .models import Employee, Payslip, Account
 
 # Create your views here.
 
-def employees(request):
-    employees = Employee.objects.all()
-    return render(request, 'shemuapp/employees.html', {'employees': employees})
+def signup_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+        
+        if password1 != password2:
+            return render(request, 'shemuapp/signup.html', {
+                'error': 'Passwords do not match'
+            })
+        
+        if Account.objects.filter(username=username).exists():
+            return render(request, 'shemuapp/signup.html', {
+                'error': 'Username already exists'
+            })
+    
+        Account.objects.create(
+            username=username,
+            password=password1
+        )
+        
+        return redirect('login')
+    
+    return render(request, 'shemuapp/signup.html')
 
-def create_employee(request):
+def login_view(request):    
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        account = Account.objects.filter(username=username, password=password).first()
+        
+        if account:
+            return redirect('employees', pk=account.pk)
+        
+        return render(request, 'shemuapp/login.html', {
+            'error': 'Invalid username or password'
+        })
+    
+    return render(request, 'shemuapp/login.html')
+
+def logout_view(request):
+    return redirect('login')
+
+def manage_account(request, pk):
+    account = get_object_or_404(Account, pk=pk)
+    
+    return render(request, 'shemuapp/manage_account.html', {
+        'current_user': account.getUsername(),
+        'pk': pk
+    })
+
+def change_password(request, pk):
+    account = get_object_or_404(Account, pk=pk)
+    
+    if request.method == 'POST':
+        current_password = request.POST.get('current_password')
+        new_password1 = request.POST.get('new_password1')
+        new_password2 = request.POST.get('new_password2')
+        
+        if account.password != current_password:
+            return render(request, 'shemuapp/change_password.html', {
+                'error': 'Current password is incorrect',
+                'pk': pk
+                    })
+                
+        if new_password1 != new_password2:
+            return render(request, 'shemuapp/change_password.html', {
+                'error': 'New passwords do not match',
+                'pk': pk
+            })      
+
+        account.password = new_password1          
+        account.save()
+
+        return redirect('manage_account', pk=pk)
+    return render(request, 'shemuapp/change_password.html', {
+        'pk': pk
+    })
+
+def delete_account(request, pk):
+    account = get_object_or_404(Account, pk=pk)
+
+    if request.method == 'POST':
+        account.delete()
+        return redirect('signup')
+    
+    return redirect('manage_account', pk=pk)
+
+#EMPLOYEES SECTION GRR
+
+def employees(request, pk):
+    account = get_object_or_404(Account, pk=pk)
+    
+    employees = Employee.objects.all()
+    return render(request, 'shemuapp/employees.html', {'employees': employees, 'pk': pk, 'current_user': account.getUsername()})
+
+def create_employee(request, pk):
+    account = get_object_or_404(Account, pk=pk)
+    
     if request.method == 'POST':
         name = request.POST['name']
         id_number = request.POST['id_number']
@@ -22,10 +117,11 @@ def create_employee(request):
             rate=rate,
             allowance=float(allowance)
         )
-        return redirect('employees')
-    return render(request, 'shemuapp/create_employee.html')
+        return redirect('employees', pk=pk)
+    return render(request, 'shemuapp/create_employee.html', {'pk': pk, 'current_user': account.getUsername()})
 
-def update_employee(request, id_number=None):
+def update_employee(request, pk, id_number=None):
+    account = get_object_or_404(Account, pk=pk)
 
     if not id_number:
         id_number = request.POST.get('id_number')
@@ -33,7 +129,7 @@ def update_employee(request, id_number=None):
     if request.method == 'POST':
         if 'name' not in request.POST:
             employee = get_object_or_404(Employee, id_number=id_number)
-            return render(request, 'shemuapp/update_employee.html', {'emp': employee})
+            return render(request, 'shemuapp/update_employee.html', {'emp': employee, 'pk': pk, 'current_user': account.getUsername()})
         
         try:
             name = request.POST.get('name')
@@ -45,25 +141,27 @@ def update_employee(request, id_number=None):
                 rate=float(rate) if rate and rate.strip() else 0.0,
                 allowance=float(allowance) if allowance and allowance.strip() else 0.0
             )
-            return redirect('employees')
+            return redirect('employees', pk=pk)
         
         except (ValueError, TypeError):
-            return redirect('employees')
+            return redirect('employees', pk=pk)
 
     return redirect('employees')
-        
-    
 
-def delete_employee(request, id_number=None):
+def delete_employee(request, pk, id_number=None):
+    account = get_object_or_404(Account, pk=pk)
+    
     if request.method == 'POST':
         if not id_number:
             id_number = request.POST.get('id_number')
         employee = get_object_or_404(Employee, id_number=id_number)
 
         employee.delete()
-    return redirect('employees')
+    return redirect('employees', pk=pk)
 
-def add_overtime(request, id_number):
+def add_overtime(request, pk):
+    account = get_object_or_404(Account, pk=pk)
+    
     if request.method == 'POST':
         id_number = request.POST.get('id_number')
         employee = get_object_or_404(Employee, id_number=id_number)
@@ -71,24 +169,28 @@ def add_overtime(request, id_number):
 
         if hours < 0:
             all_employees = Employee.objects.all()
-            return render(request, 'employees.html', {
+            return render(request, 'shemuapp/employees.html', {
                 'employees': all_employees,
                 'error': 'Hours cannot be negative',
+                'pk': pk,
+                'current_user': account.getUsername()
             })
 
-        overtime_amount = (employee.rate /160) * 1.5 * hours
+        rate = float(employee.rate)
+        current_overtime = float(employee.overtime_pay) if employee.overtime_pay else 0.0
 
-        if employee.overtime_pay:
-            new_overtime = employee.overtime_pay + overtime_amount
-        else:
-            new_overtime = overtime_amount
+        overtime_amount = (rate /160) * 1.5 * hours
+
+        new_overtime = current_overtime + overtime_amount
 
         Employee.objects.filter(id_number=id_number).update(
             overtime_pay=new_overtime
         )
-    return redirect('employees')
+    return redirect('employees', pk=pk)
 
-def payslips(request):
+def payslips(request, pk):
+    account = get_object_or_404(Account, pk=pk)
+    
     all_employees = Employee.objects.all()
     all_payslips = Payslip.objects.all()
 
@@ -128,7 +230,7 @@ def payslips(request):
                 errors.append(emp.id_number)
         
         if errors:
-            return render(request, 'payslips.html', {
+            return render(request, 'shemuapp/payslips.html', {
                 'employees': all_employees,
                 'payslips': all_payslips,
                 'months': months,
@@ -175,13 +277,17 @@ def payslips(request):
 
             emp.resetOvertime()
 
-        return redirect('payslips')
-    return render(request, 'payslips.html', {
+        return redirect('payslips', pk=pk)
+    return render(request, 'shemuapp/payslips.html', {
         'employees': all_employees,
         'payslips': all_payslips,
-        'months': months
+        'months': months,
+        'pk': pk,
+        'current_user': account.getUsername()
     })
 
-def view_payslip(request, payslip_id):
+def view_payslip(request, pk, payslip_id):
+    account = get_object_or_404(Account, pk=pk)
+    
     payslip = get_object_or_404(Payslip, id=payslip_id)
-    return render(request, 'view_payslip.html', {'payslip': payslip})
+    return render(request, 'shemuapp/view_payslip.html', {'payslip': payslip, 'pk': pk, 'current_user': account.getUsername()})

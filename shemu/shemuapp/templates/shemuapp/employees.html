@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'shemuapp/base.html' %}
 
 {% block content %}
 <h2>Employees</h2>
@@ -7,7 +7,7 @@
 <div class="alert alert-danger">{{ error }}</div>
 {% endif %}
 
-<a href="{% url 'create_employee' %}" class="btn btn-teal mb-3">+ New Employee</a>
+<a href="{% url 'create_employee' pk=pk %}" class="btn btn-teal mb-3">+ New Employee</a>
 
 <table class="table table-striped">
     <thead>
@@ -29,19 +29,19 @@
             <td>{{ employee.getAllowance }}</td>
             <td>{{ employee.getOvertime }}</td>
             <td style="white-space: nowrap;">
-                <form method="post" action="{% url 'update_employee' %}" style="display:inline;">
+                <form method="post" action="{% url 'update_employee' pk=pk %}" style="display:inline;">
                     {% csrf_token %}
                     <input type="hidden" name="id_number" value="{{ employee.id_number }}">
                     <button type="submit" class="btn btn-warning btn-sm">Update</button>
                 </form>
 
-                <form method="post" action="{% url 'delete_employee' %}" style="display:inline;">
+                <form method="post" action="{% url 'delete_employee' pk=pk %}" style="display:inline;">
                     {% csrf_token %}
                     <input type="hidden" name="id_number" value="{{ employee.id_number }}">
                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                 </form>
 
-                <form method="post" action="{% url 'add_overtime' %}" style="display:inline;">
+                <form method="post" action="{% url 'add_overtime' pk=pk %}" style="display:inline;">
                     {% csrf_token %}
                     <input type="hidden" name="id_number" value="{{ employee.id_number }}">
                     <input type="number" name="overtime_hours" step="0.01" placeholder="Hours" min="1" class="form-control form-control-sm" style="width:70px; display: inline-block; vertical-align: middle;" required>
