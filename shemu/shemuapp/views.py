@@ -181,14 +181,11 @@ def add_overtime(request, pk):
             })
 
         rate = float(employee.rate)
-        current_overtime = float(employee.overtime_pay) if employee.overtime_pay else 0.0
 
         overtime_amount = (rate /160) * 1.5 * hours
 
-        new_overtime = current_overtime + overtime_amount
-
         Employee.objects.filter(id_number=id_number).update(
-            overtime_pay=new_overtime
+            overtime_pay=overtime_amount
         )
     return redirect('employees', pk=pk)
 
@@ -297,7 +294,7 @@ def view_payslip(request, pk, payslip_id):
     gross_pay = payslip.getCycleRate() + payslip.earnings_allowance + payslip.overtime
     total_deductions = payslip.deductions_tax + payslip.pag_ibig + payslip.deductions_health + payslip.sss
 
-    return render(request, 'view_payslip.html', {'payslip': payslip, 'pk': pk, 'gross_pay': gross_pay, 'tota_deductions': total_deductions, 'current_user': account.getUsername()})
+    return render(request, 'view_payslip.html', {'payslip': payslip, 'pk': pk, 'gross_pay': gross_pay, 'total_deductions': total_deductions, 'current_user': account.getUsername()})
 
 def about_us(request, pk):
     account = get_object_or_404(Account, pk=pk)

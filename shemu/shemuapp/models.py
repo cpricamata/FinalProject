@@ -25,7 +25,7 @@ class Employee(models.Model):
             return self.overtime_pay
     
     def resetOvertime(self):
-        self.overtime_pay = 0
+        Employee.objects.filter(id=self.id).update(overtime_pay=0)
 
     def getAllowance(self):
         if not self.allowance:
