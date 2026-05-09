@@ -18,13 +18,11 @@
         padding: 20px;
         display: inline-block;
         vertical-align: top;
-        overflow: auto;
         text-align: justify;
-        border-radius: 10px;
     }
 
     .picture{
-        width: 40%;
+        width: 35%;
         height: 600px;
         display: inline-block;
         vertical-align: top;
@@ -44,6 +42,68 @@
     .picture img:hover{
         transform: scale(1.1);
         filter: brightness(70%);
+    }
+
+    .employee-section {
+        margin-top: 60px;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .employee-title {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 25px;
+        color: #2c3e7b;
+    }
+
+    .employee-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    .employee-card {
+        display: flex;
+        align-items: center;
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        text-align: left;
+    }
+
+    .employee-card img {
+        width: 65px;
+        height: 65px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 15px;
+        border: 2px solid #2c3e7b;
+    }
+
+    .employee-info h3 {
+        margin: 0;
+        font-size: 15px;
+        color: #2c3e7b;
+    }
+
+    .employee-info p {
+        margin: 2px 0;
+        font-size: 13px;
+        color: #555;
+    }
+
+    @media (max-width: 900px) {
+        .employee-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 600px) {
+        .employee-grid {
+            grid-template-columns: 1fr;
+        }
     }
 
 </style>
@@ -97,4 +157,153 @@
     </div>
 
 </div>
+
+<div class="employee-section">
+
+    <div class="employee-title">EMPLOYEE DIRECTORY</div>
+
+    <div class="employee-grid">
+
+        <div class="employee-card">
+            <img src="https://static.wikia.nocookie.net/disney/images/3/3c/Profile_-_Sulley.jpg/revision/latest?cb=20200817112818">
+            <div class="employee-info">
+                <h3>James P. Sullivan</h3>
+                <p>sullivan@monstersinc.com</p>
+                <p>Scarer</p>
+            </div>
+        </div>
+
+        <div class="employee-card">
+            <img src="https://assets.puzzlefactory.com/puzzle/166/270/original.jpg">
+            <div class="employee-info">
+                <h3>Mike Wazowski</h3>
+                <p>mikewazowski@monstersinc.com</p>
+                <p>Scare Assistant</p>
+            </div>
+        </div>
+
+        <div class="employee-card">
+            <img src="https://static.wikia.nocookie.net/disney/images/2/22/Profile_-_Henry_J._Waternoose.jpg/revision/latest?cb=20190313093722">
+            <div class="employee-info">
+                <h3>Henry J. Waternoose III</h3>
+                <p>HJWaternoose@monstersinc.com</p>
+                <p>CEO</p>
+            </div>
+        </div>
+
+        <div class="employee-card">
+            <img src="https://static0.cbrimages.com/wordpress/wp-content/uploads/2021/07/RozMonstersInc.jpg?q=50&fit=crop&w=825&dpr=1.5">
+            <div class="employee-info">
+                <h3>Roz</h3>
+                <p>adminroz@monstersinc.com</p>
+                <p>Administrator</p>
+            </div>
+        </div>
+
+        <div class="employee-card">
+            <img src="https://disneynews.us/wp-content/uploads/2019/11/Randall-Boggs-monsters-inc-randy.jpg">
+            <div class="employee-info">
+                <h3>Randall Boggs</h3>
+                <p>randall@monstersinc.com</p>
+                <p>Scarer</p>
+            </div>
+        </div>
+
+         <div class="employee-card">
+            <img src="https://static.wikia.nocookie.net/disney/images/8/82/Profile_-_Jerry.jpg/revision/latest?cb=20240914031009">
+            <div class="employee-info">
+                <h3>Jerry</h3>
+                <p>jerry@monstersinc.com</p>
+                <p>Scare Floor Supervisor</p>
+            </div>
+        </div>
+
+        <div class="employee-card">
+            <img src="https://static.wikia.nocookie.net/disney/images/c/ce/Profile_-_George_Sanderson.jpeg/revision/latest?cb=20190620232332">
+            <div class="employee-info">
+                <h3>George Sanderson</h3>
+                <p>gsanderson@monstersinc.com</p>
+                <p>Scarer</p>
+            </div>
+        </div>
+
+        <div class="employee-card">
+            <img src="https://static.wikia.nocookie.net/disney/images/4/4c/Profile_-_Fungus.jpg/revision/latest/thumbnail/width/360/height/360?cb=20190620230846">
+            <div class="employee-info">
+                <h3>Fungus</h3>
+                <p>fungus@monstersinc.com</p>
+                <p>Scare Assistant</p>
+            </div>
+        </div>
+
+        <div class="employee-card">
+            <img src="https://static.wikia.nocookie.net/disney/images/c/c4/Profile_-_Charlie_Proctor.png/revision/latest?cb=20190620232628">
+            <div class="employee-info">
+                <h3>Charlie Proctor</h3>
+                <p>proctorcharlie@monstersinc.com</p>
+                <p>Scare Assistant</p>
+            </div>
+        </div>
+
+        <div class="employee-card">
+            <img src="https://celiawiththesnakes.wordpress.com/wp-content/uploads/2019/02/0aec391e0a3b6f909f41984ecca738e8-1.jpg">
+            <div class="employee-info">
+                <h3>Celia Mae</h3>
+                <p>celiam@monstersinc.com</p>
+                <p>Receptionist</p>
+            </div>
+        </div>
+
+        <div class="employee-card">
+            <img src="https://static.wikia.nocookie.net/non-aliencreatures/images/e/e2/Flint-MonstersAtWork.jpg/revision/latest?cb=20231116113530">
+            <div class="employee-info">
+                <h3>Mrs. Flint</h3>
+                <p>flint@monstersinc.com</p>
+                <p>Trainer</p>
+            </div>
+        </div>
+
+        <div class="employee-card">
+            <img src="https://images5.alphacoders.com/115/1156811.jpg">
+            <div class="employee-info">
+                <h3>Fritz Everett</h3>
+                <p>everettfritz@monstersinc.com</p>
+                <p>Facilities Supervisor</p>
+            </div>
+        </div>
+
+        <div class="employee-card">
+            <img src="https://static.wikia.nocookie.net/disney/images/7/77/Profile_-_Cutter.jpg/revision/latest?cb=20240507230754">
+            <div class="employee-info">
+                <h3>Katherine Sterns</h3>
+                <p>sternskatherine@monstersinc.com</p>
+                <p>Mechanic</p>
+        </div>
+    </div>
+
+    <div class="employee-card">
+            <img src="https://static1.personalitydatabase.net/2/pdb-images-prod/342c6c9c/profile_images/f7b58848374940199204ea1df791ab42.png">
+            <div class="employee-info">
+                <h3>Needleman</h3>
+                <p>needleman@monstersinc.com</p>
+                <p>Maintenance</p>
+            </div>
+        </div>
+
+        <div class="employee-card">
+            <img src="https://assets.mycast.io/characters/smitty-3580208-normal.jpg">
+            <div class="employee-info">
+                <h3>Smitty</h3>
+                <p>smitty@monstersinc.com</p>
+                <p>Maintenance</p>
+            </div>
+        </div>
+
+
+
+
+    </div>
+</div>
+
+
 {% endblock %}
