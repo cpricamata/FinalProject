@@ -290,6 +290,7 @@ def payslips(request, pk):
 def view_payslip(request, pk, payslip_id):
     account = get_object_or_404(Account, pk=pk)
     payslip = get_object_or_404(Payslip, id=payslip_id)
+<<<<<<< Updated upstream
 
     gross_pay = payslip.getCycleRate() + payslip.earnings_allowance + payslip.overtime
     total_deductions = payslip.deductions_tax + payslip.pag_ibig + payslip.deductions_health + payslip.sss
@@ -302,3 +303,9 @@ def about_us(request, pk):
         'pk': pk,
         'current_user': account.getUsername()
     })
+=======
+    return render(request, 'shemuapp/view_payslip.html', {'payslip': payslip, 'pk': pk, 'current_user': account.getUsername()})
+
+def homepage(request):
+    return render(request, 'shemuapp/homepage.html')
+>>>>>>> Stashed changes
