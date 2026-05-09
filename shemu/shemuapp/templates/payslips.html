@@ -7,7 +7,7 @@
     <h2>Payroll Creation</h2>
 
     {% if error %}
-    <p>{{ error }}</p>
+    <p style="color:red">{{ error }}</p>
     {% endif %}
 
     <div style="
@@ -181,10 +181,17 @@
             <td>
                 <a class="btn btn-info btn-sm" href="{% url 'view_payslip' pk=pk payslip_id=payslip.id %}"> View </a>
             </td>
-
+            
+        </tr>
+        {% empty %}
+        <!-- if there are no records for employee -->
+        <tr>
+            <td colspan="5" style="text-align:center; padding: 20px; color: #666; font-style: italic;">
+                No records found for this employee.
+            </td>
         </tr>
         {% endfor %}
-
+        
     </table>
 
 </div>

@@ -86,11 +86,9 @@
                 <a class="nav-link" href="{% url 'employees' pk=pk %}">Employees</a>
                 <a class="nav-link" href="{% url 'payslips' pk=pk %}">Payslips</a>
                 <a class="nav-link" href="{% url 'about_us' pk=pk %}">About Us</a>
-
-                {% if current_user %}
                 <a class="nav-link" href="{% url 'manage_account' pk=pk %}">Manage Account</a>
                 <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-                {% endif %}
+            
             </div>
             {% else %}
             <a class="navbar-brand" href="{% url 'login' %}">Shemu</a>

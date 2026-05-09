@@ -228,8 +228,8 @@ def payslips(request, pk):
                 'payslips': all_payslips, # filtered
                 'months': months,
                 'pk': pk,
+                'current_user': account.getUsername()
             })
-        
         month = request.POST.get('month')
         year = request.POST.get('year')
         cycle = int(request.POST.get('cycle'))
@@ -258,13 +258,15 @@ def payslips(request, pk):
             ).exists()
 
             if exists:
-                errors.append(emp.id_number)
+                errors.append(f"{emp.id_number} ({emp.name})")
         
         if errors:
-            return render(request, 'shemuapp/payslips.html', {
+            return render(request, 'payslips.html', {
                 'employees': all_employees,
                 'payslips': all_payslips,
                 'months': months,
+                'pk': pk,
+                'current_user': account.getUsername(),
                 'error': f"Payslips already exist for: {', '.join(errors)}"
             })
         
@@ -309,6 +311,7 @@ def payslips(request, pk):
             emp.resetOvertime()
 
         return redirect('payslips', pk=pk)
+    
     return render(request, 'payslips.html', {
         'employees': all_employees,
         'payslips': all_payslips,
