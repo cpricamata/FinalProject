@@ -83,7 +83,6 @@
             {% if current_user %}
             <a class="navbar-brand" href="{% url 'employees' pk=pk %}">Shemu</a>
             <div class="navbar-nav">
-                <a class="nav-link" href="{% url 'homepage' %}">About</a>
                 <a class="nav-link" href="{% url 'employees' pk=pk %}">Employees</a>
                 <a class="nav-link" href="{% url 'payslips' pk=pk %}">Payslips</a>
                 <a class="nav-link" href="{% url 'about_us' pk=pk %}">About Us</a>
