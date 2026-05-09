@@ -208,7 +208,7 @@ def payslips(request, pk):
     account = get_object_or_404(Account, pk=pk)
     
     all_employees = Employee.objects.all()
-    all_payslips = Payslip.objects.all()
+    all_payslips = Payslip.objects.all().select_related('id_number')
 
     months = ['January', 'February', 'March', 
               'April', 'May', 'June', 
@@ -216,11 +216,26 @@ def payslips(request, pk):
               'October', 'November', 'December']
     
     if request.method == 'POST':
+        action = request.POST.get('action')
         payroll_for = request.POST.get('payroll_for')
+        #so it only shows the payslips for that specific employee, if filter button is pressed kesa submit
+        if action == 'filter':
+            if payroll_for != 'all':
+                all_payslips = all_payslips.filter(id_number__id_number=payroll_for)
+            
+            return render(request, 'payslips.html', {
+                'employees': all_employees,
+                'payslips': all_payslips, # filtered
+                'months': months,
+                'pk': pk,
+            })
+        
         month = request.POST.get('month')
         year = request.POST.get('year')
         cycle = int(request.POST.get('cycle'))
 
+        
+        
         if cycle == 1:
             date_range = "1-15"
         else:
