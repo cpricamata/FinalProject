@@ -92,7 +92,7 @@ def delete_account(request, pk):
     
     return redirect('manage_account', pk=pk)
 
-#EMPLOYEES SECTION GRR
+#EMPLOYEES SECTION
 
 def employees(request, pk):
     account = get_object_or_404(Account, pk=pk)
@@ -102,20 +102,20 @@ def employees(request, pk):
 
 def create_employee(request, pk):
     account = get_object_or_404(Account, pk=pk)
-    
     if request.method == 'POST':
-        name = request.POST['name']
-        id_number = request.POST['id_number']
-        rate = float(request.POST['rate'])
-        allowance = request.POST.get('allowance', 0)
-        if allowance == '':
-            allowance = 0
+        id_number = request.POST.get('id_number')
+        #check if ID already exists
+        if Employee.objects.filter(id_number=id_number).exists():
+            return render(request, 'create_employee.html', {
+                'error': f"Employee ID {id_number} is already registered.",
+                'pk': pk
+            })
         
         Employee.objects.create(
-            name=name,
+            name=request.POST.get('name'),
             id_number=id_number,
-            rate=rate,
-            allowance=float(allowance)
+            rate=request.POST.get('rate'),
+            allowance=request.POST.get('allowance') or 0
         )
         return redirect('employees', pk=pk)
     return render(request, 'create_employee.html', {'pk': pk, 'current_user': account.getUsername()})
