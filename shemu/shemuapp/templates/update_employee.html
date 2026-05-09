@@ -18,8 +18,11 @@
 
             <form method="POST" action="{% url 'update_employee' pk=pk %}">
                 {% csrf_token %}
-                <input type="hidden" name="original_id" value="{{ emp.id_number }}"
-
+                <input type="hidden" name="original_id" value="{{ emp.id_number }}">
+                <!--display errors here-->                
+                {% if error %}
+                    <p style="color: red; font-weight: bold;">{{ error }}</p>
+                {% endif %}
                 
                 <div class="mb-3">
                     <label class="text-dark fs-6 mb-1">Name</label>
@@ -28,7 +31,7 @@
 
                 <div class="mb-3">
                     <label class="text-dark fs-6 mb-1">ID Number:</label>
-                    <input type="number" min="1" name="id_number" class="form-control" value="{{ emp.id_number }}" required>
+                    <input type="text" name="id_number" class="form-control" value="{{ emp.id_number }}" required>
                 </div>
 
                 <div class="mb-3">

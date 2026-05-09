@@ -123,26 +123,39 @@ def create_employee(request, pk):
 def update_employee(request, pk, id_number=None):
     account = get_object_or_404(Account, pk=pk)
 
-    if not id_number:
+    if not id_number: #if it was not passed, get it from POST
         id_number = request.POST.get('id_number')
 
     if request.method == 'POST':
         name = request.POST.get('name')
+        new_id = request.POST.get('id_number')
         rate = request.POST.get('rate')
         allowance = request.POST.get('allowance')
 
-        if name and rate:
-            original_id = request.POST.get('original_id_number', id_number)
+        original_id = request.POST.get('original_id', id_number)
 
+        if name and rate and new_id:
+            #if new update sa ID
+            if new_id != original_id:
+                if Employee.objects.filter(id_number=new_id).exists():
+                    employee = get_object_or_404(Employee, id_number=original_id)
+                    return render(request, 'update_employee.html', {
+                        'emp': employee,
+                        'pk': pk,
+                        'error': f"Cannot update: ID {new_id} is already assigned to another employee.",
+                        'current_user': account.getUsername()
+                    })
+            #update if di naman clashing ang ids
             Employee.objects.filter(id_number=original_id).update(
                 name=name,
-                id_number=request.POST.get('id_number'),
+                id_number=new_id,
                 rate=float(rate) if rate and rate.strip() else 0.0,
                 allowance=float(allowance) if allowance and allowance.strip() else 0.0
             )
             return redirect('employees', pk=pk)
         
         else:
+            #if incomplete
             employee = get_object_or_404(Employee, id_number=id_number)
             return render(request, 'update_employee.html', {
                 'emp': employee,
