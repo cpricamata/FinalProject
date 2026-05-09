@@ -293,7 +293,7 @@ def view_payslip(request, pk, payslip_id):
     account = get_object_or_404(Account, pk=pk)
     payslip = get_object_or_404(Payslip, id=payslip_id)
 
-    gross_pay = payslip.getCycleRate() + payslip.earnings_allowance + payslip.overtime
+    gross_pay = float(payslip.getCycleRate()) + float(payslip.earnings_allowance) + float(payslip.overtime)
     total_deductions = payslip.deductions_tax + payslip.pag_ibig + payslip.deductions_health + payslip.sss
 
     return render(request, 'view_payslip.html', {'payslip': payslip, 'pk': pk, 'gross_pay': gross_pay, 'total_deductions': total_deductions, 'current_user': account.getUsername()})

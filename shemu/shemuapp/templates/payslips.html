@@ -147,7 +147,7 @@
         <tr style="
             background-color:#2c3e7b;
             color:white;">
-            <th>ID</th>
+            <th>ID Number</th>
             <th>Date</th>
             <th>Cycle</th>
             <th>Total Pay</th>
@@ -168,7 +168,7 @@
 
             <td>{{ payslip.pay_cycle }}</td>
 
-            <td>{{ payslip.total_pay }}</td>
+            <td>{{ payslip.total_pay|floatformat:2 }}</td>
 
             <td>
                 <a href="{% url 'view_payslip' pk=pk payslip_id=payslip.id %}"> View </a>

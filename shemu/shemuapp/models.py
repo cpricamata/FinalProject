@@ -1,9 +1,10 @@
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 class Employee(models.Model):
     name = models.CharField(max_length=300)
-    id_number = models.CharField(max_length=300)
+    id_number = models.CharField(max_length=300, unique=True)
     rate = models.DecimalField(max_digits=10, decimal_places=2)
     overtime_pay = models.DecimalField(max_digits=10, decimal_places=2,null=True, blank=True)
     allowance = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
@@ -42,7 +43,13 @@ class Payslip(models.Model): #Payslip Attributes
     #on_delete=models.CASCADE : https://www.freecodecamp.org/news/how-to-use-a-foreign-key-in-django/
     month = models.CharField(max_length=20)
     date_range = models.CharField(max_length=50)
-    year = models.CharField(max_length=4)
+    year = models.PositiveIntegerField(
+        validators=[
+            MinValueValidator(1), 
+            MaxValueValidator(9999)
+        ],
+        help_text="Enter a 4-digit year"
+    )
     pay_cycle = models.IntegerField()
     rate = models.FloatField()
     earnings_allowance = models.FloatField(default=0)
@@ -69,34 +76,35 @@ class Payslip(models.Model): #Payslip Attributes
         return self.pay_cycle
 
     def getRate(self):
-        return self.rate
+        return f"{self.rate:.2f}"
 
     def getCycleRate(self):
-        return self.rate / 2
+        self.rate = self.rate/2
+        return f"{self.rate:.2f}"
 
     def getEarnings_allowance(self):
-        return self.earnings_allowance
+        return f"{self.earnings_allowance:.2f}"
 
     def getDeductions_tax(self):
-        return self.deductions_tax
+        return f"{self.deductions_tax:.2f}"
 
     def getDeductions_health(self):
-        return self.deductions_health
+        return f"{self.deductions_health:.2f}"
 
     def getPag_ibig(self):
-        return self.pag_ibig
+        return f"{self.pag_ibig:.2f}"
 
     def getSSS(self):
-        return self.sss
+        return f"{self.sss:.2f}"
 
     def getOvertime(self):
-        return self.overtime
+        return f"{self.overtime:.2f}"
 
     def getTotal_pay(self):
-        return self.total_pay
+        return f"{self.total_pay:.2f}"
 
     def __str__(self):
-        return "pk: {}, Employee: {}, Period: {} {}, {}, Cycle: {}, Total Pay: {}".format(self.pk, self.id_number, self.month, self.date_range, self.year, self.pay_cycle, self.total_pay)
+        return "pk: {}, Employee: {}, Period: {} {}, {}, Cycle: {}, Total Pay: {:.2f}".format(self.pk, self.id_number, self.month, self.date_range, self.year, self.pay_cycle, self.total_pay)
 
 class Account(models.Model):
     username = models.CharField(max_length=300)
