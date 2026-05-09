@@ -10,6 +10,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Graduate&display=swap" rel="stylesheet">
 
+    <!--Roboto-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <style>
         body {
             background-color: #E8F5F3;
@@ -84,10 +88,20 @@
         font-weight: 600;
         font-style: normal;
         }
+        
+
+        .rob{
+        font-family: "Roboto", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+        font-variation-settings:
+            "wdth" 100;
+        }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar rob navbar-expand-lg">
         <div class="container">
             {% if current_user %}
             <a class="navbar-brand graduate-regular" href="{% url 'employees' pk=pk %}">Shemu</a>
@@ -100,20 +114,20 @@
             
             </div>
             {% else %}
-            <a class="navbar-brand" href="{% url 'login' %}">Shemu</a>
+            <a class="navbar-brand  graduate-regular" href="{% url 'login' %}">Shemu</a>
             <div class="navbar-nav"></div>
             {% endif %}
         </div>
     </nav>
 
     <div class="container">
-        <div class="content-box">
+        <div class="content-box rob">
             {% block content %}
             {% endblock %}
         </div>
     </div>
 
-    <footer class="fixed-bottom mt-5">
+    <footer class="fixed-bottom mt-5 rob">
         <div class="container text-center">
             <p class="mb-0">&copy; 2026 Shemu</p>
         </div>
