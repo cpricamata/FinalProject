@@ -181,11 +181,13 @@ def add_overtime(request, pk):
             })
 
         rate = float(employee.rate)
-
+        current_overtime = float(employee.overtime_pay) if employee.overtime_pay else 0.0
+        
         overtime_amount = (rate /160) * 1.5 * hours
+        new_overtime = current_overtime + overtime_amount
 
         Employee.objects.filter(id_number=id_number).update(
-            overtime_pay=overtime_amount
+            overtime_pay=new_overtime
         )
     return redirect('employees', pk=pk)
 
