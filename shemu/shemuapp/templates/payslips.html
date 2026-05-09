@@ -37,7 +37,7 @@
 
                 {% for employee in employees %}
                 <option value="{{ employee.id_number }}">
-                    {{ employee.id_number }}
+                    {{ employee.id_number }} 
                 </option>
                 {% endfor %}
 
@@ -89,7 +89,7 @@
                             <strong>Year:</strong>
                         </label>
 
-                        <input type="text" name="year" style="
+                        <input type="number" min="1810" name="year" style="
                             flex:1;
                             padding:8px;" required>
 
@@ -159,7 +159,7 @@
             background-color:white;
             border-bottom:1px solid #ddd;">
 
-            <td>{{ payslip.id }}</td>
+            <td>{{ payslip.id_number.id_number }} ({{ payslip.id_number.name }})</td>
             <td>
                 {{ payslip.month }}
                 {{ payslip.date_range }},
@@ -168,7 +168,7 @@
 
             <td>{{ payslip.pay_cycle }}</td>
 
-            <td>{{ payslip.total_pay|floatformat:2 }}</td>
+            <td>P {{ payslip.total_pay|floatformat:2 }}</td>
 
             <td>
                 <a href="{% url 'view_payslip' pk=pk payslip_id=payslip.id %}"> View </a>
